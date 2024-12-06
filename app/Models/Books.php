@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,5 +26,11 @@ class Books extends Model
     public function authors()
     {
         return $this->belongsToMany(Authors::class, 'WrittenBy', 'id_book', 'id_author');
+    }
+
+    // Relation avec les catégories via la table pivot
+    public function categories()
+    {
+        return $this->belongsToMany(Categories::class, 'BookCategory', 'id_book', 'id_category');
     }
 }

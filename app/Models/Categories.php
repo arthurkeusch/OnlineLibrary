@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,23 +8,19 @@ class Categories extends Model
 {
     use HasFactory;
 
-    protected $table = 'BookCategory';
-    public $incrementing = false;
+    protected $table = 'Categories'; // Nom de la table des catégories
+    protected $primaryKey = 'id_category'; // Clé primaire
+
+    // Attributs modifiables en masse
+    protected $fillable = [
+        'name_category',
+    ];
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'id_book',
-        'id_category',
-    ];
-
-    public function book()
+    // Relation avec les livres via la table pivot
+    public function books()
     {
-        return $this->belongsTo(Books::class, 'id_book');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Categories::class, 'id_category');
+        return $this->belongsToMany(Books::class, 'BookCategory', 'id_category', 'id_book');
     }
 }

@@ -39,7 +39,12 @@ Online Library est une application web permettant de gérer une bibliothèque en
    php OnlineLibrary migrate
    ```
 
-4. Lancement du serveur
+4. Création d'un lien symbolique pour les images :
+   ```bash
+   php OnlineLibrary storage:link
+   ```
+
+5Lancement du serveur
    ```bash
    php OnlineLibrary serve
    ```

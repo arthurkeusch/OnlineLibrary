@@ -19,28 +19,30 @@
 
     <div class="container mt-5">
         <h2 class="text-center">Livres les plus réservés</h2>
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-3">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
             @foreach ($featuredBooks as $book)
-                <a href="/books/{{ $book->id_book }}" class="text-decoration-none">
-                    <div class="col">
-                        <div class="card shadow-sm h-100" style="cursor: pointer;">
+                <div class="col">
+                    <a href="/books/{{ $book->id_book }}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100 d-flex flex-column" style="cursor: pointer;">
                             <img
-                                src="{{ $book->image_book ? asset($book->image_book) : asset('storage/books/book.jpg') }}"
-                                class="card-img-top" alt="Image du livre : {{ $book->name_book }}">
-                            <div class="card-body">
-                                <h5 class="card-title" style="text-align: center;">
+                                src="{{ $book->image_book ? asset('storage/books/' . $book->image_book) : asset('storage/books/book.jpg') }}"
+                                class="card-img-top"
+                                alt="Image du livre : {{ $book->name_book }}"
+                                onerror="this.onerror=null; this.src='{{ asset('storage/books/book.jpg') }}';">
+                            <div class="card-body d-flex flex-column justify-content-between">
+                                <h5 class="card-title text-center">
                                     {{ $book->name_book }}<br>
                                     <sub>({{ Carbon::parse($book->publication_date_book)->year }})</sub>
                                 </h5>
-                                <p class="card-text text-muted">
+                                <p class="card-text text-muted text-center">
                                     @foreach ($book->authors as $author)
                                         {{ $author->name_author }}
                                     @endforeach
                                 </p>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                </div>
             @endforeach
         </div>
     </div>

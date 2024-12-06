@@ -69,30 +69,33 @@
         <p class="mt-2">Livres : <span id="visibleBooksCount">{{ $books->count() }}</span></p>
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4 mt-4" id="booksContainer">
-        @foreach ($books as $book)
-            <div class="col book-item" data-categories="{{ $book->categories->pluck('name_category')->implode(',') }}"
-                 data-authors="{{ $book->authors->pluck('name_author')->implode(',') }}">
-                <a href="/books/{{ $book->id_book }}" class="text-decoration-none">
-                    <div class="card shadow-sm h-100" style="cursor: pointer;">
-                        <img src="{{ $book->image_book ? asset($book->image_book) : asset('storage/books/book.jpg') }}"
-                             class="card-img-top"
-                             alt="Image du livre : {{ $book->name_book }}">
-                        <div class="card-body">
-                            <h5 class="card-title book-name" style="text-align: center;">
-                                {{ $book->name_book }}<br><sub>({{ Carbon::parse($book->publication_date_book)->year }}
-                                    )</sub>
-                            </h5>
-                            <p class="card-text text-muted">
-                                @foreach ($book->authors as $author)
-                                    {{ $author->name_author }}
-                                @endforeach
-                            </p>
+    <div class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4 mt-4" id="booksContainer">
+            @foreach ($books as $book)
+                <div class="col book-item" data-categories="{{ $book->categories->pluck('name_category')->implode(',') }}"
+                     data-authors="{{ $book->authors->pluck('name_author')->implode(',') }}">
+                    <a href="/books/{{ $book->id_book }}" class="text-decoration-none">
+                        <div class="card shadow-sm h-100" style="cursor: pointer;">
+                            <img src="{{ $book->image_book ? asset("storage/books/" . $book->image_book) : asset('storage/books/book.jpg') }}"
+                                 class="card-img-top"
+                                 alt="Image du livre : {{ $book->name_book }}"
+                                 onerror="this.onerror=null; this.src='{{ asset('storage/books/book.jpg') }}';">
+                            <div class="card-body">
+                                <h5 class="card-title book-name" style="text-align: center;">
+                                    {{ $book->name_book }}<br><sub>({{ Carbon::parse($book->publication_date_book)->year }}
+                                        )</sub>
+                                </h5>
+                                <p class="card-text text-muted text-center">
+                                    @foreach ($book->authors as $author)
+                                        {{ $author->name_author }}
+                                    @endforeach
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
-        @endforeach
+                    </a>
+                </div>
+            @endforeach
+        </div>
     </div>
 
 

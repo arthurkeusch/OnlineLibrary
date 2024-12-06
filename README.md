@@ -34,7 +34,12 @@ Online Library est une application web permettant de gérer une bibliothèque en
    composer install
    ```
 
-3. Lancement du serveur
+3. Migration du serveur :
+   ```bash
+   php OnlineLibrary migrate
+   ```
+
+4. Lancement du serveur
    ```bash
    php OnlineLibrary serve
    ```

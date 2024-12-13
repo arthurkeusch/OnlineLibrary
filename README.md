@@ -44,7 +44,7 @@ Online Library est une application web permettant de gérer une bibliothèque en
    php OnlineLibrary storage:link
    ```
 
-5Lancement du serveur
+5. Lancement du serveur
    ```bash
    php OnlineLibrary serve
    ```

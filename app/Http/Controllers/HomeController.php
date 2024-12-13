@@ -20,7 +20,7 @@ class HomeController extends Controller
             ->leftJoin('Copies', 'Books.id_book', '=', 'Copies.id_book')
             ->leftJoin('LoanHistory', 'Copies.id_copy', '=', 'LoanHistory.id_copy')
             ->selectRaw('COUNT(LoanHistory.id_user) as reservations_count')
-            ->groupBy('Books.id_book')
+            ->groupBy('Books.id_book', 'Books.image_book', 'Books.publication_date_book', 'Books.name_book', 'Books.description_book')
             ->orderByDesc('reservations_count')
             ->take(6)
             ->get();

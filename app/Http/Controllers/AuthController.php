@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
+use App\Http\Controllers\HomeController;
 use App\Models\Users;
 use App\Http\Middleware\IsAdmin;
 
@@ -26,8 +28,13 @@ class AuthController extends Controller
         if (Auth::attempt(['username' => $credentials['login'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
 
-            // Rediriger selon le rôle de l'utilisateur
-            return redirect()->intended(Auth::user()->isAdmin ? '/admin/dashboard' : '/dashboard');
+            if (Auth::user()->isAdmin) {
+                // Rediriger l'administrateur vers le tableau de bord admin
+                return redirect()->route('admin.dashboard');
+            } else {
+                // Rediriger l'utilisateur non admin vers la page d'accueil
+                return redirect()->route('home');
+            }
         }
 
         // En cas d'échec, retourner une erreur

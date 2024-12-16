@@ -7,16 +7,16 @@ Route::prefix('admin')->group(function () {
     /**
      * Permet de se connecter en tant qu'administrateur.
      *
-     * URL : /admin/login
+     * URL : /admin/auth
      * Méthode : POST
      * Contrôleur : AdminController
-     * Fonction : login
-     * Nom de la route : admin.login
+     * Fonction : auth
+     * Nom de la route : admin.auth
      * Paramètres :
-     *  - login : string, identifiant de l'admin
+     *  - auth : string, identifiant de l'admin
      *  - password : string, mot de passe de l'admin
      */
-    Route::post('/login', [AdminController::class, 'login'])->name('admin.login');
+    Route::post('/auth', [AdminController::class, 'auth'])->name('admin.auth');
 
     /**
      * Permet de se déconnecter en tant qu'administrateur.

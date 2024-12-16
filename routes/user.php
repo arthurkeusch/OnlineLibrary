@@ -7,16 +7,16 @@ Route::prefix('user')->group(function () {
     /**
      * Permet de se connecter en tant qu'utilisateur.
      *
-     * URL : /user/login
+     * URL : /user/auth
      * Méthode : POST
      * Contrôleur : UserController
-     * Fonction : login
-     * Nom de la route : user.login
+     * Fonction : auth
+     * Nom de la route : user.auth
      * Paramètres :
-     *  - login : string, identifiant de l'utilisateur
+     *  - auth : string, identifiant de l'utilisateur
      *  - password : string, mot de passe de l'utilisateur
      */
-    Route::post('/login', [UserController::class, 'login'])->name('user.login');
+    Route::post('/auth', [UserController::class, 'auth'])->name('user.auth');
 
     /**
      * Permet de se déconnecter en tant qu'utilisateur.
@@ -38,7 +38,7 @@ Route::prefix('user')->group(function () {
      * Fonction : register
      * Nom de la route : user.register
      * Paramètres :
-     *  - login : string, identifiant de l'utilisateur
+     *  - auth : string, identifiant de l'utilisateur
      *  - password : string, mot de passe de l'utilisateur
      */
     Route::post('/register', [UserController::class, 'register'])->name('user.register');
@@ -52,7 +52,7 @@ Route::prefix('user')->group(function () {
      * Fonction : updateAccount
      * Nom de la route : user.account.update
      * Paramètres :
-     *  - login : string, nouveau login (optionnel)
+     *  - auth : string, nouveau auth (optionnel)
      *  - password : string, nouveau mot de passe (optionnel)
      */
     Route::patch('/account', [UserController::class, 'updateAccount'])->name('user.account.update');

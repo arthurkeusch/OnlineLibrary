@@ -22,7 +22,9 @@
                 </li>
             </ul>
             <div class="nav">
-                <button type="button" class="btn btn-outline-light me-2">Se connecter</button>
+                <form action="{{ route('auth.form') }}" method="GET" style="display:inline;">
+                    <button type="submit" class="btn btn-outline-light me-2">Se connecter</button>
+                </form>
                 <button type="button" class="btn btn-warning">S'inscrire</button>
             </div>
         </div>

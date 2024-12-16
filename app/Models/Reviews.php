@@ -21,13 +21,15 @@ class Reviews extends Model
         'date_review',
     ];
 
+    // Relation avec le livre
     public function book()
     {
-        return $this->belongsTo(Books::class, 'id_book');
+        return $this->belongsTo(Books::class, 'id_book', 'id_book');
     }
 
+    // Relation avec l'utilisateur
     public function user()
     {
-        return $this->belongsTo(Users::class, 'id_user');
+        return $this->belongsTo(Users::class, 'id_user', 'id_user');
     }
 }

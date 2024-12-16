@@ -35,7 +35,7 @@ class BooksController extends Controller
      */
     public function one(int $id): View
     {
-        $book = Books::with('authors')->findOrFail($id);
+        $book = Books::with(['authors', 'copies', 'reviews.user'])->findOrFail($id);
 
         return view('books.one', ['book' => $book]);
     }

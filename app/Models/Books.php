@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,5 +33,17 @@ class Books extends Model
     public function categories()
     {
         return $this->belongsToMany(Categories::class, 'BookCategory', 'id_book', 'id_category');
+    }
+
+    // Relation avec les copies
+    public function copies()
+    {
+        return $this->hasMany(Copies::class, 'id_book', 'id_book');
+    }
+
+    // Relation avec les reviews
+    public function reviews()
+    {
+        return $this->hasMany(Reviews::class, 'id_book', 'id_book');
     }
 }

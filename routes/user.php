@@ -3,6 +3,10 @@
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [UserController::class, 'index'])->name('user.dashboard');
+});
+
 Route::prefix('user')->group(function () {
     /**
      * Permet de se connecter en tant qu'utilisateur.

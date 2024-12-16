@@ -17,9 +17,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Réservations</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/dashboard">Admin</a>
-                </li>
             </ul>
             <div class="nav">
                 <form action="{{ route('auth.form') }}" method="GET" style="display:inline;">

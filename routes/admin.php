@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\IsAdmin;
+
+Route::middleware(['auth', IsAdmin::class])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+});
 
 Route::prefix('admin')->group(function () {
     /**

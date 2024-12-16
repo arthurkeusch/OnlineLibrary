@@ -5,6 +5,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
     /**
+     * Affiche la page de tableau de bord pour l'administration.
+     *
+     * URL : /admin/dashboard
+     * Méthode : GET
+     * Contrôleur : AdminController
+     * Fonction : dashboard
+     * Nom de la route : admin.dashboard
+     *
+     * Paramètres :
+     * Aucun paramètre requis.
+     *
+     * Middleware :
+     * - auth:admin (si un middleware de vérification d'administration est configuré)
+     */
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+    /**
      * Permet de se connecter en tant qu'administrateur.
      *
      * URL : /admin/login

@@ -18,7 +18,7 @@
                     <a class="nav-link" href="#">Réservations</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Admin</a>
+                    <a class="nav-link" href="/admin/dashboard">Admin</a>
                 </li>
             </ul>
             <div class="nav">

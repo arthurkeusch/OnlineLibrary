@@ -64,11 +64,12 @@ CREATE TABLE WrittenBy
 
 CREATE TABLE LoanHistory
 (
-    id_copy    INT,
-    id_user    INT,
-    start_loan DATE,
-    end_loan   DATE,
-    PRIMARY KEY (id_copy, id_user),
+    id_loanhistory INT AUTO_INCREMENT,
+    id_copy        INT,
+    id_user        INT,
+    start_loan     DATE,
+    end_loan       DATE,
+    PRIMARY KEY (id_loanhistory),
     FOREIGN KEY (id_copy) REFERENCES Copies (id_copy),
     FOREIGN KEY (id_user) REFERENCES Users (id_user)
 );

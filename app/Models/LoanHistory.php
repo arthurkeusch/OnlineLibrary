@@ -11,7 +11,10 @@ class LoanHistory extends Model
     use HasFactory;
 
     protected $table = 'LoanHistory';
-    public $incrementing = false;
+
+    protected $primaryKey = 'id_loanhistory';
+
+    public $incrementing = true;
 
     public $timestamps = false;
 

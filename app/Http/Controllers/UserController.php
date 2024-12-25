@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Copies;
 use App\Models\LoanHistory;
 use App\Models\Reviews;
 use Illuminate\Contracts\View\Factory;
@@ -93,5 +94,45 @@ class UserController extends Controller
         }
 
         return redirect()->back()->with('success', 'Votre commentaire a été ajouté avec succès.');
+    }
+
+    /**
+     * Permet à un utilisateur d'emprunter un livre.
+     *
+     * Vérifie si l'utilisateur est connecté, valide les paramètres de la requête et s'assure que l'exemplaire est disponible.
+     * Si toutes les conditions sont remplies, l'emprunt est enregistré et la disponibilité de l'exemplaire est mise à jour.
+     *
+     * @param Request $request La requête contenant les identifiants du livre et de l'exemplaire.
+     * @return RedirectResponse La réponse de redirection avec un message de succès ou d'erreur.
+     */
+    public function reserveBook(Request $request): RedirectResponse
+    {
+        $user = auth()->user();
+
+        if (!$user) {
+            return redirect()->back()->withErrors(['error' => 'Vous devez être connecté pour emprunter un livre.']);
+        }
+
+        $request->validate([
+            'book_id' => 'required|integer',
+            'copy_id' => 'required|integer',
+        ]);
+
+        $copy = Copies::find($request->input('copy_id'));
+
+        if (!$copy || !$copy->isAvailable || $copy->id_book != $request->input('book_id')) {
+            return redirect()->back()->withErrors(['error' => 'Cet exemplaire n\'est pas disponible ou n\'appartient pas à ce livre.']);
+        }
+
+        LoanHistory::create([
+            'id_copy' => $copy->id_copy,
+            'id_user' => $user->id_user,
+            'start_loan' => now(),
+            'end_loan' => null,
+        ]);
+
+        $copy->update(['isAvailable' => false]);
+
+        return redirect()->back()->with('success', 'Vous avez emprunté cet exemplaire avec succès.');
     }
 }

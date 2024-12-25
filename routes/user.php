@@ -64,29 +64,30 @@ Route::prefix('user')->group(function () {
     /**
      * Permet de mettre un commentaire sur un livre.
      *
-     * URL : /user/comments
+     * URL : /user/reviews
      * Méthode : POST
      * Contrôleur : UserController
      * Fonction : addComment
-     * Nom de la route : user.comments.add
+     * Nom de la route : user.reviews.add
      * Paramètres :
      *  - book_id : int, identifiant du livre
      *  - comment : string, contenu du commentaire
      */
-    Route::post('/comments', [UserController::class, 'addComment'])->name('user.comments.add');
+    Route::post('/reviews/{book_id}', [UserController::class, 'addComment'])->name('user.reviews.add');
 
     /**
      * Permet de supprimer un commentaire.
      *
-     * URL : /user/comments/{id}
+     * URL : /user/reviews/{id}
      * Méthode : DELETE
      * Contrôleur : UserController
      * Fonction : deleteComment
-     * Nom de la route : user.comments.delete
+     * Nom de la route : user.reviews.delete
      * Paramètres :
-     *  - id : int, identifiant unique du commentaire
+     *  - id_book : int, identifiant unique du livre
+     *  - id_user : int, identifiant unique de l'utilisateur
      */
-    Route::delete('/comments/{id}', [UserController::class, 'deleteComment'])->name('user.comments.delete');
+    Route::delete('/reviews/{id_book}/{id_user}', [UserController::class, 'deleteComment'])->name('user.reviews.delete');
 
     /**
      * Permet de réserver un livre.

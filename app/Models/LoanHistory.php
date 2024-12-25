@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LoanHistory extends Model
 {
@@ -21,12 +22,12 @@ class LoanHistory extends Model
         'end_loan',
     ];
 
-    public function copy()
+    public function copy(): BelongsTo
     {
         return $this->belongsTo(Copies::class, 'id_copy');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(Users::class, 'id_user');
     }

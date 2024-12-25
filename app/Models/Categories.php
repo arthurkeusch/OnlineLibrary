@@ -1,25 +1,25 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Categories extends Model
 {
     use HasFactory;
 
-    protected $table = 'Categories'; // Nom de la table des catégories
-    protected $primaryKey = 'id_category'; // Clé primaire
+    protected $table = 'Categories';
+    protected $primaryKey = 'id_category';
 
-    // Attributs modifiables en masse
     protected $fillable = [
         'name_category',
     ];
 
     public $timestamps = false;
 
-    // Relation avec les livres via la table pivot
-    public function books()
+    public function books(): BelongsToMany
     {
         return $this->belongsToMany(Books::class, 'BookCategory', 'id_category', 'id_book');
     }

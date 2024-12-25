@@ -10,19 +10,21 @@ use Illuminate\Support\Facades\Auth;
 class IsAdmin
 {
     /**
-     * Handle an incoming request.
+     * Gère une requête entrante.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * Ce middleware vérifie si l'utilisateur connecté est administrateur.
+     * Si ce n'est pas le cas, il est redirigé vers le tableau de bord administrateur.
+     * Sinon, la requête est transmise au middleware suivant.
+     *
+     * @param Closure(Request): (Response) $next La fonction suivante dans la chaîne des middlewares
+     * @param Request $request La requête entrante
+     * @return Response La réponse HTTP
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Vérifie si l'utilisateur est authentifié et administrateur
         if (Auth::check() && !Auth::user()->isAdmin) {
-            return redirect()->route('user.dashboard'); // Redirige vers le tableau de bord utilisateur
+            return redirect()->route('admin.dashboard');
         }
-
-        return $next($request); // Autorise l'accès si l'utilisateur est admin
+        return $next($request);
     }
 }

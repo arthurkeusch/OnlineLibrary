@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Authors;
 use App\Models\Books;
 use App\Models\Categories;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class BooksController extends Controller

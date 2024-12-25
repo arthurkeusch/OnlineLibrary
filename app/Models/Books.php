@@ -4,15 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Books extends Model
 {
     use HasFactory;
 
-    protected $table = 'Books'; // Nom de la table
-    protected $primaryKey = 'id_book'; // Clé primaire
+    protected $table = 'Books';
+    protected $primaryKey = 'id_book';
 
-    // Attributs modifiables en masse
     protected $fillable = [
         'image_book',
         'publication_date_book',
@@ -20,29 +21,24 @@ class Books extends Model
         'description_book',
     ];
 
-    // Désactive les timestamps si la table ne les contient pas
     public $timestamps = false;
 
-    // Relation avec les auteurs
-    public function authors()
+    public function authors(): BelongsToMany
     {
         return $this->belongsToMany(Authors::class, 'WrittenBy', 'id_book', 'id_author');
     }
 
-    // Relation avec les catégories via la table pivot
-    public function categories()
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Categories::class, 'BookCategory', 'id_book', 'id_category');
     }
 
-    // Relation avec les copies
-    public function copies()
+    public function copies(): HasMany
     {
         return $this->hasMany(Copies::class, 'id_book', 'id_book');
     }
 
-    // Relation avec les reviews
-    public function reviews()
+    public function reviews(): HasMany
     {
         return $this->hasMany(Reviews::class, 'id_book', 'id_book');
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Copies extends Model
 {
@@ -20,12 +21,12 @@ class Copies extends Model
         'id_state',
     ];
 
-    public function book()
+    public function book(): BelongsTo
     {
         return $this->belongsTo(Books::class, 'id_book');
     }
 
-    public function state()
+    public function state(): BelongsTo
     {
         return $this->belongsTo(States::class, 'id_state');
     }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Authors extends Model
 {
@@ -14,8 +15,7 @@ class Authors extends Model
 
     public $timestamps = false;
 
-    // Relation avec les livres
-    public function books()
+    public function books(): BelongsToMany
     {
         return $this->belongsToMany(Books::class, 'WrittenBy', 'id_author', 'id_book');
     }

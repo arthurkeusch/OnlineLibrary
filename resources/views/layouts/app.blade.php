@@ -15,6 +15,8 @@
 
 <x-navbar/>
 
+<x-toast/>
+
 <div style="margin: 70px 20px 0 20px;">
     @yield('content')
 </div>

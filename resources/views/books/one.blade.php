@@ -3,7 +3,7 @@
 @section('title', $book->name_book)
 
 @php
-    use Illuminate\Support\Facades\Auth;
+    use Carbon\Carbon;use Illuminate\Support\Facades\Auth;
 
     $currentUserReview = null;
     $totalComments = $book->reviews->count();
@@ -34,13 +34,16 @@
                     @endforeach
                 </p>
                 <p><strong>Description :</strong> {{ $book->description_book }}</p>
-                <p><strong>Date de publication :</strong> {{ \Carbon\Carbon::parse($book->publication_date_book)->locale('fr')->translatedFormat('d F Y') }}</p>
+                <p><strong>Date de publication
+                        :</strong> {{ Carbon::parse($book->publication_date_book)->locale('fr')->translatedFormat('d F Y') }}
+                </p>
 
                 @if(Auth::check())
                     <div class="d-flex justify-content-between align-items-center mt-4">
-                        <button class="btn btn-primary {{ $book->copies->where('isAvailable', true)->count() == 0 ? 'disabled' : '' }}"
-                                data-bs-toggle="{{ $book->copies->where('isAvailable', true)->count() == 0 ? '' : 'modal' }}"
-                                data-bs-target="#borrowModal"
+                        <button
+                            class="btn btn-primary {{ $book->copies->where('isAvailable', true)->count() == 0 ? 'disabled' : '' }}"
+                            data-bs-toggle="{{ $book->copies->where('isAvailable', true)->count() == 0 ? '' : 'modal' }}"
+                            data-bs-target="#borrowModal"
                             {{ $book->copies->where('isAvailable', true)->count() == 0 ? 'disabled' : '' }}>
                             Emprunter ce livre
                             <span class="badge bg-light text-dark ms-2">{{ $book->copies->where('isAvailable', true)->count() }} disponibles</span>
@@ -78,7 +81,7 @@
                             </form>
                             <span class="badge bg-primary" style="user-select: none;">Votre commentaire</span>
                             <h5 class="card-title">{{ $currentUserReview->user->first_name_user }} {{ $currentUserReview->user->last_name_user }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ \Carbon\Carbon::parse($currentUserReview->date_review)->locale('fr')->translatedFormat('d F Y') }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ Carbon::parse($currentUserReview->date_review)->locale('fr')->translatedFormat('d F Y') }}</h6>
                             <p class="card-text">{{ $currentUserReview->content_review }}</p>
                         </div>
                     </div>
@@ -88,7 +91,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <h5 class="card-title">{{ $review->user->first_name_user }} {{ $review->user->last_name_user }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">{{ \Carbon\Carbon::parse($review->date_review)->locale('fr')->translatedFormat('d F Y') }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ Carbon::parse($review->date_review)->locale('fr')->translatedFormat('d F Y') }}</h6>
                             <p class="card-text">{{ $review->content_review }}</p>
                         </div>
                     </div>
@@ -108,11 +111,22 @@
                 </div>
                 <div class="modal-body">
                     @foreach ($book->copies->where('isAvailable', true) as $copy)
+                        @php
+                            $stateColors = [
+                                1 => 'bg-success',
+                                2 => 'bg-primary',
+                                3 => 'bg-info',
+                                4 => 'bg-secondary',
+                                5 => 'bg-warning',
+                                6 => 'bg-danger',
+                            ];
+                            $badgeColor = $stateColors[$copy->state->id_state] ?? 'bg-secondary';
+                        @endphp
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div>
                                 <strong>ID :</strong> {{ $copy->id_copy }}
-                                <span class="badge {{ $copy->id_state == 1 ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $copy->id_state == 1 ? 'Bon état' : 'Mauvais état' }}
+                                <span class="badge {{ $badgeColor }}">
+                                    {{ $copy->state->name_state }}
                                 </span>
                             </div>
                             <form action="{{ route('user.reservations.add') }}" method="POST">
@@ -125,6 +139,30 @@
                     @endforeach
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="addCommentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ route('user.reviews.add', ['book_id' => $book->id_book]) }}" method="POST">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCommentModalLabel">Ajouter un commentaire</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <textarea class="form-control" id="commentContent" name="comment" rows="4"
+                                      required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Ajouter</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 @endsection

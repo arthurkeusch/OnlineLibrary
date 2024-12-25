@@ -135,4 +135,49 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'Vous avez emprunté cet exemplaire avec succès.');
     }
+
+    /**
+     * Affiche l'historique des emprunts de l'utilisateur connecté.
+     *
+     * Cette méthode permet à un utilisateur authentifié de consulter la liste des livres
+     * qu'il a empruntés. Les emprunts non rendus sont affichés en premier, suivis des emprunts rendus,
+     * triés par date de rendu de la plus récente à la plus ancienne.
+     *
+     * @return View|Factory|Application La vue affichant l'historique des emprunts.
+     */
+    public function loanHistory(): View|Factory|Application
+    {
+        $user = auth()->user();
+        $loanedBooks = LoanHistory::where('id_user', $user->id_user)
+            ->with(['copy.book'])
+            ->orderByRaw('end_loan IS NULL DESC')
+            ->orderByDesc('end_loan')
+            ->get();
+
+        return view('user.loanHistory', compact('loanedBooks'));
+    }
+
+    /**
+     * Permet à un utilisateur de rendre un livre emprunté.
+     *
+     * Cette méthode met à jour l'exemplaire pour qu'il soit de nouveau disponible
+     * et enregistre la date de retour dans l'historique de l'emprunt.
+     *
+     * @param int $id_loanhistory L'identifiant de l'historique de l'emprunt.
+     * @return RedirectResponse
+     */
+    public function returnBook(int $id_loanhistory): RedirectResponse
+    {
+        $loan = LoanHistory::findOrFail($id_loanhistory);
+
+        if ($loan->end_loan !== null) {
+            return redirect()->back()->withErrors(['error' => 'Ce livre a déjà été rendu.']);
+        }
+
+        $loan->copy->update(['isAvailable' => true]);
+
+        $loan->update(['end_loan' => now()]);
+
+        return redirect()->back()->with('success', 'Livre rendu avec succès.');
+    }
 }

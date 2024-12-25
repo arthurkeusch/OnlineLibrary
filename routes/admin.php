@@ -4,11 +4,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\IsAdmin;
 
-Route::middleware(['auth', IsAdmin::class])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-});
-
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['auth', IsAdmin::class])->group(function () {
     /**
      * Affiche la page de tableau de bord pour l'administration.
      *
@@ -17,12 +13,6 @@ Route::prefix('admin')->group(function () {
      * Contrôleur : AdminController
      * Fonction : dashboard
      * Nom de la route : admin.dashboard
-     *
-     * Paramètres :
-     * Aucun paramètre requis.
-     *
-     * Middleware :
-     * - auth:admin (si un middleware de vérification d'administration est configuré)
      */
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 

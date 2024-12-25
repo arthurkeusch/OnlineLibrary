@@ -25,6 +25,11 @@ class LoanHistory extends Model
         'end_loan',
     ];
 
+    protected $casts = [
+        'start_loan' => 'datetime',
+        'end_loan' => 'datetime',
+    ];
+
     public function copy(): BelongsTo
     {
         return $this->belongsTo(Copies::class, 'id_copy');

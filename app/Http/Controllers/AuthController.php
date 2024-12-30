@@ -6,6 +6,8 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Users;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -17,6 +19,42 @@ class AuthController extends Controller
     public function showLoginForm(): View
     {
         return view('auth.login');
+    }
+
+    /**
+     * Affiche le formulaire d'inscription.
+     *
+     * @return View
+     */
+    public function showRegisterForm()
+    {
+        return view('auth.register');
+    }
+
+    /**
+     * Gère la tentative d'inscription de l'utilisateur.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        $validatedData = $request->validate([
+            'username' => 'required|string|unique:Users,username', // Unique dans la table 'Users'
+            'password' => 'required|string|confirmed', // Le champ 'password_confirmation' doit correspondre
+            'first_name_user' => 'required|string',
+            'last_name_user' => 'required|string',
+        ]);
+
+        $user = Users::create([
+            'username' => $validatedData['username'],
+            'password' => Hash::make($validatedData['password']), // Hacher le mot de passe
+            'first_name_user' => $validatedData['first_name_user'],
+            'last_name_user' => $validatedData['last_name_user'],
+            'isAdmin' => false, // Par défaut, un nouvel utilisateur n'est pas administrateur
+        ]);
+        Auth::login($user);
+        return redirect()->route('home')->with('success', 'Votre compte a été créé avec succès.');
     }
 
     /**

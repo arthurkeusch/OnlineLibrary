@@ -35,7 +35,9 @@
                     <form action="{{ route('auth.form') }}" method="GET" style="display:inline;">
                         <button type="submit" class="btn btn-outline-light me-2">Se connecter</button>
                     </form>
-                    <button type="button" class="btn btn-warning">S'inscrire</button>
+                    <form action="{{ route('register.form') }}" method="GET" style="display:inline;">
+                        <button type="submit" class="btn btn-warning">S'inscrire</button>
+                    </form>
                 @endif
             </div>
         </div>

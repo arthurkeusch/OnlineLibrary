@@ -20,9 +20,8 @@ class AdminController extends Controller
         $categories = Categories::all();
 
         $loanHistories = LoanHistory::with(['copy.book', 'user'])
-            ->whereNull('end_loan') // Filtrer uniquement les prêts actifs
-            ->paginate(11, ['*'], 'loansPage')
-            ->appends($request->except('loansPage'));;
+            ->orderBy('start_loan', 'desc')
+            ->get();
 
         return view('admin.dashboard', compact('books', 'authors', 'categories', 'loanHistories'));
     }
@@ -137,5 +136,97 @@ class AdminController extends Controller
         $book->delete();
 
         return redirect()->route('admin.dashboard')->with('success', 'Livre supprimé avec succès');
+    }
+
+    public function authors()
+    {
+        $authors = Authors::orderBy('name_author', 'asc')
+            ->paginate(10, ['*'], 'authorsPage');
+
+        return view('admin.authors', compact('authors'));
+    }
+
+    public function addAuthor(Request $request)
+    {
+        $request->validate(['name_author' => 'required|string|max:255']);
+        Authors::create($request->only('name_author'));
+        return redirect()->route('admin.authors')->with('success', 'Auteur ajouté avec succès.');
+    }
+
+    public function updateAuthor(Request $request, $id)
+    {
+        $request->validate(['name_author' => 'required|string|max:255']);
+        $author = Authors::findOrFail($id);
+        $author->update($request->only('name_author'));
+        return redirect()->route('admin.authors')->with('success', 'Auteur modifié avec succès.');
+    }
+
+    public function deleteAuthor($id)
+    {
+        $author = Authors::find($id);
+
+        if (!$author) {
+            return redirect()->back()->with('error', 'Auteur non trouvé.');
+        }
+
+        if ($author->hasBooks()) {
+            return redirect()->back()->with('error', 'L\'auteur ne peut pas être supprimé car il est associé à des livres.');
+        }
+
+        $author->delete();
+
+        return redirect()->route('admin.authors')->with('success', 'Auteur supprimé avec succès.');
+    }
+
+    public function categories(Request $request)
+    {
+        $categories = Categories::orderBy('name_category', 'asc')
+            ->paginate(10, ['*'], 'authorsPage');
+
+        return view('admin.categories', compact('categories'));
+    }
+
+    public function addCategory(Request $request)
+    {
+        $request->validate([
+            'name_category' => 'required|string|max:255',
+        ]);
+
+        Categories::create($request->all());
+
+        return redirect()->route('admin.categories')->with('success', 'Catégorie ajoutée avec succès.');
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $category = Categories::find($id);
+        if (!$category) {
+            return redirect()->route('admin.categories')->with('error', 'Catégorie non trouvée.');
+        }
+
+        $request->validate([
+            'name_category' => 'required|string|max:255',
+        ]);
+
+        $category->update($request->all());
+
+        return redirect()->route('admin.categories')->with('success', 'Catégorie mise à jour avec succès.');
+    }
+
+    public function deleteCategory($id)
+    {
+        $category = Categories::find($id);
+
+        if (!$category) {
+            return redirect()->route('admin.categories')->with('error', 'Catégorie non trouvée.');
+        }
+
+        if ($category->books()->exists()) {
+            return redirect()->route('admin.categories')->with('error', 'Impossible de supprimer cette catégorie car elle est associée à un ou plusieurs livres.');
+        }
+
+        $category->delete();
+
+        return redirect()->route('admin.categories')->with('success', 'Catégorie supprimée avec succès.');
     }
 }

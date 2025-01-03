@@ -13,10 +13,19 @@ class Authors extends Model
     protected $table = 'Authors';
     protected $primaryKey = 'id_author';
 
+    protected $fillable = [
+        'name_author',
+    ];
+
     public $timestamps = false;
 
     public function books(): BelongsToMany
     {
         return $this->belongsToMany(Books::class, 'WrittenBy', 'id_author', 'id_book');
+    }
+
+    public function hasBooks()
+    {
+        return $this->books()->count() > 0;
     }
 }

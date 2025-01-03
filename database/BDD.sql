@@ -48,7 +48,7 @@ CREATE TABLE Users
 
 CREATE TABLE Categories
 (
-    id_category   INT,
+    id_category   INT AUTO_INCREMENT,
     name_category VARCHAR(32),
     PRIMARY KEY (id_category)
 );

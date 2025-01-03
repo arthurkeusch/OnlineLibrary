@@ -97,4 +97,17 @@ Route::prefix('admin')->middleware(['auth', IsAdmin::class])->group(function () 
      *  - id : int, identifiant unique du commentaire
      */
     Route::delete('/comments/{id}', [AdminController::class, 'deleteComment'])->name('admin.comments.delete');
+
+    // Auteurs
+    Route::get('/authors', [AdminController::class, 'authors'])->name('admin.authors');
+    Route::post('/authors', [AdminController::class, 'addAuthor'])->name('admin.authors.add');
+    Route::patch('/authors/{id}', [AdminController::class, 'updateAuthor'])->name('admin.authors.update');
+    Route::delete('/authors/{id}', [AdminController::class, 'deleteAuthor'])->name('admin.authors.delete');
+
+    // Catégories
+    Route::get('/categories', [AdminController::class, 'categories'])->name('admin.categories');
+    Route::post('/categories', [AdminController::class, 'addCategory'])->name('admin.categories.add');
+    Route::patch('/categories/{id}', [AdminController::class, 'updateCategory'])->name('admin.categories.update');
+    Route::delete('/categories/{id}', [AdminController::class, 'deleteCategory'])->name('admin.categories.delete');
+
 });

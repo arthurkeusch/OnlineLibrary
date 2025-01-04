@@ -21,6 +21,9 @@
                 @endif
                 @if(Auth::check() && Auth::user()->isAdmin)
                     <li class="nav-item">
+                        <a class="nav-link" href="/user/loanHistory">Réservations</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/admin/dashboard">Dashboard</a>
                     </li>
                 @endif

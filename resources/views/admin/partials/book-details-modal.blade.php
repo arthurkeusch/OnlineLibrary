@@ -23,7 +23,7 @@
                     <p><strong>Date de publication :</strong> {{ $book->publication_date_book }}</p>
                 </div>
                 <div>
-                    <img src="{{ asset('storage/books/' . $book->image_book) }}" alt="{{ $book->name_book }}" class="img-thumbnail img-fluid ml-md-3 mt-3 mt-md-0" style="max-width: 250px; height: auto;">
+                    <img src="{{ $book->image_book ? asset("storage/books/" . $book->image_book) : asset('storage/books/book.jpg') }}" alt="{{ $book->name_book }}" class="img-thumbnail img-fluid ml-md-3 mt-3 mt-md-0" style="max-width: 250px; height: auto;">
                 </div>
             </div>
             <div class="modal-footer">
